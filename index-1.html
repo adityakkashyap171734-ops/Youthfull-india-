@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Youthfull India – Home Appliance Repair</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbf7f0;--card:#fff;--ink:#16213e;--mut:#62697d;--line:#e7e0d3;--pri:#16213e;--acc:#ffb703;--ok:#0f9d82;--bad:#d64545;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1426;--card:#182038;--ink:#f3efe6;--mut:#a3aac0;--line:#2a3354;--pri:#ffb703}.hero{color:#16213e!important}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Figtree,system-ui,sans-serif}
+h1,h2{font-family:'Bricolage Grotesque',system-ui,sans-serif;margin:0;letter-spacing:-.01em}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 16px}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px}
+.logo{width:34px;height:34px;border-radius:10px 10px 10px 2px;background:var(--acc);color:#16213e;display:grid;place-items:center;font-size:20px}
+.seg{display:flex;gap:6px;background:var(--line);padding:4px;border-radius:12px;margin-bottom:10px}
+.seg button{flex:1;border:0;background:none;color:var(--mut);padding:9px 4px;border-radius:9px;font:600 14px Figtree,sans-serif;cursor:pointer}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px #0002}
+main{max-width:760px;margin:0 auto;padding:16px}
+.hero{background:var(--pri);color:#fff;border-radius:18px;padding:22px 20px;margin-bottom:18px}
+.hero h1{font-size:28px;line-height:1.15}.hero p{margin:8px 0 0;opacity:.85}
+h2{font-size:19px;margin:20px 0 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.svc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:left;cursor:pointer;color:var(--ink);font:inherit}
+.svc:hover,.svc:focus-visible{border-color:var(--acc);outline:2px solid var(--acc)}
+.svc .e{font-size:28px}.svc b{display:block;margin-top:4px}.svc span{color:var(--mut);font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.mut{color:var(--mut);font-size:14px}
+label{display:block;font-weight:600;font-size:14px;margin:10px 0 4px}
+input,select,textarea{width:100%;padding:11px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+.btn{border:0;border-radius:10px;padding:11px 16px;font:600 15px Figtree,sans-serif;cursor:pointer;background:var(--acc);color:#16213e}
+.btn.sec{background:var(--line);color:var(--ink)}.btn.ok{background:var(--ok);color:#fff}.btn.bad{background:var(--bad);color:#fff}
+.btn:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.pill{font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--line)}
+.Pending{background:#ffe9a8;color:#6b4a00}.Accepted{background:#cfe3ff;color:#0b3c85}.InProgress{background:#e4d4ff;color:#4a1b8c}.Completed{background:#c9f1e6;color:#075e4b}.Cancelled{background:#ffd5d5;color:#8c1d1d}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.stat b{font:800 26px 'Bricolage Grotesque',sans-serif;display:block}
+.tbl{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;font-weight:600;z-index:9;max-width:90%}
+.empty{text-align:center;color:var(--mut);padding:26px 10px}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#16213e"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body>
+<header><div class="row"><div class="brand"><img src="icon-192.png" alt="" style="width:38px;height:38px;border-radius:50%">Youthfull India</div><button class="btn sec" id="lg" style="padding:6px 12px" aria-label="Language">हिं / EN</button></div></header>
+<main id="app"><div class="empty">Loading…</div></main>
+<script>
+firebase.initializeApp({
+  apiKey:"AIzaSyBT5V4_BQ6r7ZQwwogJjr0mS1kQjt-qlNs",
+  authDomain:"youthfull-india.firebaseapp.com",
+  projectId:"youthfull-india",
+  storageBucket:"youthfull-india.firebasestorage.app",
+  messagingSenderId:"590594762839",
+  appId:"1:590594762839:web:059b113e279e39dba09b12"
+});
+var auth=firebase.auth(),db=firebase.firestore(),TS=firebase.firestore.FieldValue.serverTimestamp;
+var SERVICES=[
+{id:'ac',n:'AC Repair',e:'❄️',p:499,d:'Gas fill, service, install'},
+{id:'fr',n:'Refrigerator',e:'🧊',p:399,d:'Cooling, noise, leakage'},
+{id:'wm',n:'Washing Machine',e:'🌀',p:349,d:'Drum, motor, drain'},
+{id:'mw',n:'Microwave',e:'♨️',p:299,d:'Heating, panel, door'},
+{id:'ro',n:'Water Purifier',e:'💧',p:349,d:'Filter, service, leakage'},
+{id:'gy',n:'Geyser',e:'🚿',p:299,d:'Heating, thermostat'},
+{id:'ch',n:'Chimney & Hob',e:'🍳',p:349,d:'Suction, cleaning'}];
+var SLOTS=['9 AM – 11 AM','11 AM – 1 PM','2 PM – 4 PM','4 PM – 6 PM'];
+var S={me:null,sel:null,bookings:[],pending:[],mine:[],provs:[],pw:0},unsubs=[],AM='login',AR='customer',AE='',L='en',signing=false;
+var D={en:{hero:'Home appliances, fixed in one tap.',sub:'Verified technicians, fixed visit price, same-day slots.',what:'What needs repair?',mine:'My bookings',none:'No bookings yet. Pick a service above.',book:'Book technician',pay:'Pay',paid:'Paid',rate:'Rate'},
+hi:{hero:'घर के उपकरण, बस एक टैप में ठीक।',sub:'वेरिफाइड टेक्नीशियन, तय विज़िट शुल्क, उसी दिन का स्लॉट।',what:'क्या रिपेयर करवाना है?',mine:'मेरी बुकिंग',none:'अभी कोई बुकिंग नहीं। ऊपर से सर्विस चुनें।',book:'टेक्नीशियन बुक करें',pay:'भुगतान करें',paid:'भुगतान हुआ',rate:'रेटिंग दें'}};
+function t(k){return D[L][k]}
+function svc(id){return SERVICES.filter(function(s){return s.id===id})[0]||{id:id,n:'Appliance Repair',e:'🛠',p:399,d:''}}
+function esc(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function pill(s){return '<span class="pill '+s.replace(' ','')+'">'+s+'</span>'}
+function sid(b){return '#'+b.id.slice(0,5).toUpperCase()}
+function val(i){var e=document.getElementById(i);return e?e.value:''}
+function sorted(a){return a.slice().sort(function(x,y){return (y.ts?y.ts.seconds:9e9)-(x.ts?x.ts.seconds:9e9)})}
+function toast(m){var e=document.createElement('div');e.className='toast';e.textContent=m;document.body.appendChild(e);setTimeout(function(){e.remove()},2600)}
+function ping(m){toast(m);try{var a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator();o.connect(a.destination);o.frequency.value=880;o.start();setTimeout(function(){o.stop()},250)}catch(e){}
+ try{if(window.Notification&&Notification.permission==='granted')new Notification('Youthfull India',{body:m})}catch(e){}}
+
+/* ---------- live data ---------- */
+function watch(q,cb,notify){var first=true;unsubs.push(q.onSnapshot(function(sn){
+ var a=sn.docs.map(function(d){var o=d.data();o.id=d.id;return o});cb(a);
+ if(!first&&notify)sn.docChanges().forEach(function(c){if(c.type==='added')ping(notify(c.doc.data()))});
+ first=false;render()},function(e){console.log(e)}))}
+function stop(){unsubs.forEach(function(u){u()});unsubs=[];S.bookings=[];S.pending=[];S.mine=[];S.provs=[];S.pw=0}
+function start(){stop();var u=S.me;
+ if(u.role==='customer')watch(db.collection('bookings').where('uid','==',u.id),function(a){S.bookings=a});
+ if(u.role==='admin'){
+  watch(db.collection('bookings'),function(a){S.bookings=a},function(b){return 'New booking: '+svc(b.sid).n+' · '+b.slot});
+  watch(db.collection('users').where('role','==','provider'),function(a){S.provs=a})}
+ if(u.role==='provider')unsubs.push(db.collection('users').doc(u.id).onSnapshot(function(d){
+  S.me=Object.assign({id:d.id},d.data());
+  if(S.me.approved&&!S.pw){S.pw=1;
+   watch(db.collection('bookings').where('st','==','Pending'),function(a){S.pending=a},function(b){return 'New job: '+svc(b.sid).n+' · '+b.slot});
+   watch(db.collection('bookings').where('pid','==',u.id),function(a){S.mine=a})}
+  render()}))}
+async function loadUser(user){var d=await db.collection('users').doc(user.uid).get();
+ if(!d.exists){await auth.signOut();return}
+ S.me=Object.assign({id:d.id},d.data());S.sel=null;start();render();
+ if(S.me.role!=='customer'&&window.Notification&&Notification.permission==='default')try{Notification.requestPermission()}catch(e){}}
+auth.onAuthStateChanged(function(u){if(signing)return;if(u)loadUser(u);else{stop();S.me=null;render()}});
+
+/* ---------- auth ---------- */
+function mail(i,r){return i.toLowerCase()+'.'+r+'@youthfulindia.app'}
+function err(m){AE=m;signing=false;render()}
+var EM={'auth/email-already-in-use':'Account already exists. Please login.','auth/invalid-credential':'Wrong ID or password.','auth/wrong-password':'Wrong ID or password.','auth/user-not-found':'Wrong ID or password.','auth/network-request-failed':'No internet connection.','yi/admin-exists':'An admin account already exists.'};
+async function doAuth(){
+ var r=AR,i=val('au_i').trim(),p=val('au_p'),su=AM==='signup';
+ if(r==='admin'?i.length<3:!/^\d{10}$/.test(i))return err(r==='admin'?'Username needs 3+ characters.':'Enter a 10-digit mobile number.');
+ if(p.length<6)return err('Password needs 6+ characters.');
+ var n=val('su_n').trim();if(su&&!n)return err('Enter your full name.');
+ signing=true;
+ try{
+  if(!su){var c=await auth.signInWithEmailAndPassword(mail(i,r),p);var d=await db.collection('users').doc(c.user.uid).get();
+   if(!d.exists||d.data().role!==r){await auth.signOut();return err('No '+r+' account for this ID.')}
+   signing=false;AE='';return loadUser(c.user)}
+  var c2=await auth.createUserWithEmailAndPassword(mail(i,r),p);
+  var u={role:r,name:n,ident:i};
+  if(r==='provider'){u.skill=val('su_s').trim()||'General';u.city=val('su_c').trim()||'-';u.approved=false}
+  var b=db.batch();b.set(db.collection('users').doc(c2.user.uid),u);
+  if(r==='admin')b.set(db.collection('config').doc('adminSet'),{uid:c2.user.uid});
+  try{await b.commit()}catch(e){await c2.user.delete();throw{code:r==='admin'?'yi/admin-exists':'yi/write'}}
+  signing=false;AE='';AM='login';loadUser(c2.user);toast('Account created')
+ }catch(e){err(EM[e.code]||'Something went wrong. Try again.')}}
+function authView(){var su=AM==='signup',r=AR;
+ var h='<div class="hero"><h1>'+t('hero')+'</h1><p>'+t('sub')+'</p></div><div class="card"><div class="seg">'+['customer','provider','admin'].map(function(x){return '<button data-ar="'+x+'" class="'+(x===r?'on':'')+'">'+x[0].toUpperCase()+x.slice(1)+'</button>'}).join('')+'</div><div class="seg"><button data-am="login" class="'+(su?'':'on')+'">Login</button><button data-am="signup" class="'+(su?'on':'')+'">Create account</button></div>';
+ if(su)h+='<label for="su_n">Full name</label><input id="su_n" autocomplete="name">';
+ h+='<label for="au_i">'+(r==='admin'?'Username':'Mobile number')+'</label><input id="au_i" '+(r==='admin'?'':'inputmode="numeric" maxlength="10" ')+'autocomplete="username">';
+ if(su&&r==='provider')h+='<label for="su_s">Skills (e.g. AC, Fridge)</label><input id="su_s"><label for="su_c">City</label><input id="su_c">';
+ h+='<label for="au_p">Password (6+ characters)</label><input id="au_p" type="password" autocomplete="current-password">'+(AE?'<p style="color:var(--bad);margin:8px 0 0">'+esc(AE)+'</p>':'')+'<button class="btn" id="go" style="width:100%;margin-top:14px">'+(su?'Create account':'Login')+'</button></div>';
+ if(su&&r==='admin')h+='<p class="mut">Only the very first admin account can be created. Later admin sign-ups are blocked.</p>';
+ return h}
+
+/* ---------- views ---------- */
+function extra(b){if(b.st!=='Completed')return '';var h='<div style="margin-top:8px">';
+ if(b.paid)h+='<span class="pill Completed">'+t('paid')+' · '+esc(b.paid)+'</span>';
+ else h+='<div class="row"><select id="pay'+b.id+'" style="width:auto"><option>UPI</option><option>Card</option><option>Cash</option></select><button class="btn ok" data-p="'+b.id+'">'+t('pay')+' ₹'+svc(b.sid).p+'</button></div>';
+ if(b.r)h+='<div style="margin-top:6px;color:#e09b00" aria-label="'+b.r+' stars">'+'★'.repeat(b.r)+'☆'.repeat(5-b.r)+'</div>';
+ else h+='<div style="margin-top:6px">'+t('rate')+': '+[1,2,3,4,5].map(function(i){return '<button class="btn sec" style="padding:4px 10px;margin-right:3px" data-rt="'+b.id+'-'+i+'">'+i+'★</button>'}).join('')+'</div>';
+ return h+'</div>'}
+function customer(){
+ var h='<div class="hero"><h1>'+t('hero')+'</h1><p>'+t('sub')+'</p></div>';
+ if(S.sel){var s=svc(S.sel);
+  h+='<div class="card"><div class="row"><h2 style="margin:0">'+s.e+' '+s.n+'</h2><b>₹'+s.p+' visit</b></div><p class="mut">'+s.d+'. Repair cost visit ke baad batayi jayegi.</p>'+
+  '<label for="n">Your name</label><input id="n" autocomplete="name" value="'+esc(S.me.name)+'">'+
+  '<label for="ph">Phone number</label><input id="ph" inputmode="numeric" maxlength="10" autocomplete="tel" value="'+esc(S.me.ident)+'">'+
+  '<label for="ad">Full address</label><textarea id="ad" rows="2"></textarea>'+
+  '<label for="sl">Time slot</label><select id="sl">'+SLOTS.map(function(x){return '<option>'+x+'</option>'}).join('')+'</select>'+
+  '<div class="row" style="margin-top:14px"><button class="btn sec" id="back">Back</button><button class="btn" id="book">'+t('book')+'</button></div></div>';
+ }else h+='<h2>'+t('what')+'</h2><div class="grid">'+SERVICES.map(function(s){return '<button class="svc" data-s="'+s.id+'"><div class="e">'+s.e+'</div><b>'+s.n+'</b><span>From ₹'+s.p+'</span></button>'}).join('')+'</div>';
+ h+='<h2>'+t('mine')+'</h2>';var m=sorted(S.bookings);
+ return h+(m.length?m.map(function(b){return '<div class="card"><div class="row"><b>'+svc(b.sid).e+' '+svc(b.sid).n+'</b>'+pill(b.st)+'</div><div class="mut">'+sid(b)+' · '+esc(b.slot)+'</div><div class="mut">'+esc(b.addr)+'</div>'+
+  (b.st==='Pending'?'<button class="btn bad" style="margin-top:8px" data-c="'+b.id+'">Cancel</button>':'')+extra(b)+'</div>'}).join(''):'<div class="empty">'+t('none')+'</div>')}
+function provider(){
+ var p=S.me,h='<h2 style="margin-top:0">Provider app</h2>';
+ if(!p.approved)return h+'<div class="card"><b>Approval pending</b><p class="mut">Admin is verifying your profile. Jobs will appear here once approved.</p></div>';
+ var done=S.mine.filter(function(b){return b.st==='Completed'});
+ h+='<div class="stats"><div class="stat"><b>'+done.length+'</b><span class="mut">Jobs done</span></div><div class="stat"><b>₹'+done.reduce(function(a,b){return a+Math.round(svc(b.sid).p*.8)},0)+'</b><span class="mut">Earnings (80%)</span></div></div>';
+ h+='<h2>New job requests</h2>'+(S.pending.length?sorted(S.pending).map(function(b){return '<div class="card"><div class="row"><b>'+svc(b.sid).e+' '+svc(b.sid).n+'</b><b>₹'+svc(b.sid).p+'</b></div><div class="mut">'+esc(b.slot)+' · '+esc(b.addr)+'</div><button class="btn ok" style="margin-top:8px" data-a="'+b.id+'">Accept job</button></div>'}).join(''):'<div class="empty">No new requests right now.</div>');
+ var my=sorted(S.mine.filter(function(b){return b.st!=='Completed'}));
+ return h+'<h2>My jobs</h2>'+(my.length?my.map(function(b){return '<div class="card"><div class="row"><b>'+svc(b.sid).n+'</b>'+pill(b.st)+'</div><div class="mut">'+esc(b.name)+' · '+esc(b.phone)+'</div><div class="mut">'+esc(b.addr)+' · '+esc(b.slot)+'</div>'+(b.st==='Accepted'?'<button class="btn" style="margin-top:8px" data-g="'+b.id+'">Start job</button>':b.st==='In Progress'?'<button class="btn ok" style="margin-top:8px" data-f="'+b.id+'">Mark completed</button>':'')+'</div>'}).join(''):'<div class="empty">No active jobs.</div>')}
+function admin(){
+ var B=S.bookings,rev=B.filter(function(b){return b.st==='Completed'}).reduce(function(a,b){return a+svc(b.sid).p},0);
+ function pn(id){var p=S.provs.filter(function(x){return x.id===id})[0];return p?esc(p.name):'–'}
+ var h='<h2 style="margin-top:0">Admin dashboard</h2><div class="stats"><div class="stat"><b>'+B.length+'</b><span class="mut">Total bookings</span></div><div class="stat"><b>'+B.filter(function(b){return b.st==='Pending'}).length+'</b><span class="mut">Pending</span></div><div class="stat"><b>₹'+rev+'</b><span class="mut">Revenue</span></div><div class="stat"><b>'+S.provs.filter(function(p){return p.approved}).length+'/'+S.provs.length+'</b><span class="mut">Active providers</span></div></div>';
+ h+='<h2>Providers</h2>'+(S.provs.length?S.provs.map(function(p){return '<div class="card"><div class="row"><div><b>'+esc(p.name)+'</b><div class="mut">'+esc(p.skill)+' · '+esc(p.city)+' · '+esc(p.ident)+'</div></div><button class="btn '+(p.approved?'bad':'ok')+'" data-v="'+p.id+'">'+(p.approved?'Block':'Approve')+'</button></div></div>'}).join(''):'<div class="empty">No providers yet.</div>');
+ return h+'<h2>All bookings</h2><div class="card tbl"><table><tr><th>ID</th><th>Service</th><th>Customer</th><th>Technician</th><th>Status</th><th>Paid</th><th>Rating</th></tr>'+sorted(B).map(function(b){return '<tr><td>'+sid(b)+'</td><td>'+svc(b.sid).n+'</td><td>'+esc(b.name)+'</td><td>'+(b.pid?pn(b.pid):'–')+'</td><td>'+pill(b.st)+'</td><td>'+esc(b.paid||'–')+'</td><td>'+(b.r?b.r+'★':'–')+'</td></tr>'}).join('')+'</table></div>'}
+function render(){
+ var a=document.getElementById('app');
+ if(!S.me){a.innerHTML=authView();return}
+ var bar='<div class="row" style="margin-bottom:12px"><span class="mut">'+esc(S.me.name)+' · '+S.me.role+'</span><button class="btn sec" id="out" style="padding:6px 12px">Logout</button></div>';
+ var y=window.scrollY,f=document.activeElement&&document.activeElement.id;
+ a.innerHTML=bar+(S.me.role==='customer'?customer():S.me.role==='provider'?provider():admin())}
+
+/* ---------- actions ---------- */
+function upd(id,d,m){db.collection('bookings').doc(id).update(d).then(function(){if(m)toast(m)}).catch(function(e){toast('Not allowed: '+e.code)})}
+document.getElementById('lg').onclick=function(){L=L==='en'?'hi':'en';render()};
+document.getElementById('app').onclick=function(e){
+ var x=e.target.closest('[data-s],[data-c],[data-a],[data-g],[data-f],[data-v],[data-p],[data-rt],[data-ar],[data-am],#go,#out,#back,#book');if(!x)return;
+ if(x.dataset.ar){AR=x.dataset.ar;AE='';render()}
+ else if(x.dataset.am){AM=x.dataset.am;AE='';render()}
+ else if(x.id==='go')doAuth();
+ else if(x.id==='out'){auth.signOut()}
+ else if(x.dataset.s){S.sel=x.dataset.s;render();window.scrollTo(0,0)}
+ else if(x.id==='back'){S.sel=null;render()}
+ else if(x.id==='book'){var n=val('n').trim(),ph=val('ph').trim(),ad=val('ad').trim();
+  if(!n||!/^\d{10}$/.test(ph)||!ad){toast('Enter name, 10-digit phone and address');return}
+  db.collection('bookings').add({uid:S.me.id,sid:S.sel,name:n,phone:ph,addr:ad,slot:val('sl'),st:'Pending',pid:null,ts:TS()}).then(function(){S.sel=null;render();toast('Booking confirmed!')}).catch(function(e){toast('Booking failed: '+e.code)})}
+ else if(x.dataset.c)upd(x.dataset.c,{st:'Cancelled'},'Booking cancelled');
+ else if(x.dataset.a)upd(x.dataset.a,{st:'Accepted',pid:S.me.id},'Job accepted');
+ else if(x.dataset.g)upd(x.dataset.g,{st:'In Progress'},'Job started');
+ else if(x.dataset.f)upd(x.dataset.f,{st:'Completed'},'Job completed');
+ else if(x.dataset.p)upd(x.dataset.p,{paid:val('pay'+x.dataset.p)},'Payment successful (demo)');
+ else if(x.dataset.rt){var q=x.dataset.rt.split('-');upd(q[0],{r:+q[1]},'Thanks for rating!')}
+ else if(x.dataset.v){var p=S.provs.filter(function(z){return z.id===x.dataset.v})[0];db.collection('users').doc(p.id).update({approved:!p.approved}).catch(function(e){toast('Not allowed: '+e.code)})}};
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});
+</script>
+</body>
+</html>
