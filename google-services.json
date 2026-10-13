@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "590594762839",
+    "project_id": "youthfull-india",
+    "storage_bucket": "youthfull-india.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590594762839:android:345d206081f2493da09b12",
+        "android_client_info": {
+          "package_name": "com.youthfull.youthfull_india"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "590594762839-6hpfvvilqi1hk5c2j2khg9ld68klevak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtNGiUoqGCWjaUnFZayKJAqeaVO9fxEwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "590594762839-6hpfvvilqi1hk5c2j2khg9ld68klevak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
